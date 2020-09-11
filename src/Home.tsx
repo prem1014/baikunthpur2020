@@ -105,6 +105,16 @@ const Home = () => {
         })
     }
 
+    const getVoteByVillage = (id: any, party: any) => {
+        const total = voteShare[party].filter( (itm: any) => itm.village === id);
+
+        return total.length;
+    }
+
+    const getVillageById = (id: string) => {
+        const villageDetails: any = listOfPanchayat.find( (vill: any) => vill.id === id);
+        return villageDetails.hn
+    }
     useEffect( () => {
         getVoteFromDB();
     }, [])
@@ -144,6 +154,7 @@ const Home = () => {
                                 <h5 className="text-center">प्रेम शंकर यादव</h5>
                                 <h2>{voteShare.rjd.length}</h2>
                                 <h3>{getVotePer(voteShare.rjd.length, voteShare.total)}</h3>
+                                <h6>{getVillageById(village)} {getVoteByVillage(village, 'rjd')}</h6>
                             </div>
                         </div>
                         <div className="col-lg-3 col-md-3 col-6" style={{marginBottom: '10px'}}>
@@ -152,6 +163,7 @@ const Home = () => {
                                 <h5 className="text-center">मंजीत सिंह</h5>
                                 <h2>{voteShare.jdu.length}</h2>
                                 <h3>{getVotePer(voteShare.jdu.length, voteShare.total)}</h3>
+                                <h6>{getVillageById(village)} {getVoteByVillage(village, 'jdu')}</h6>
                             </div>
                             </div>
                         <div className="col-lg-3 col-md-3 col-6">
@@ -160,6 +172,7 @@ const Home = () => {
                                 <h5 className="text-center">मिथलेश तिवारी</h5>
                                 <h2>{voteShare.bjp.length}</h2>
                                 <h3>{getVotePer(voteShare.bjp.length, voteShare.total)}</h3>
+                                <h6>{getVillageById(village)} {getVoteByVillage(village, 'bjp')}</h6>
                             </div>
                             </div>
                         <div className="col-lg-3 col-md-3 col-6">
@@ -168,6 +181,7 @@ const Home = () => {
                                 <h5 className="text-center">कोई और</h5>
                                 <h2>{voteShare.oth.length}</h2>
                                 <h3>{getVotePer(voteShare.oth.length, voteShare.total)}</h3>
+                                <h6>{getVillageById(village)} {getVoteByVillage(village, 'oth')}</h6>
                             </div>
                             </div>
                     </div>
