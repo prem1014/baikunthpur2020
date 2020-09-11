@@ -62,6 +62,8 @@ const Home = () => {
             alert('मोबाइल नंबर वैध नहीं है। ');
             return;
         }
+        // alert('Heavy load on server, please try after some time');
+        // return
         if(document.cookie || localStorage.getItem('id')) {
             alert('आपके मोबाइल या कंप्यूटर से एक बार वोट हो चूका है। कृपया दूसरे मोबाइल या कंप्यूटर से कोसिस करें। ')
             return;
