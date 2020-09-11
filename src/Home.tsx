@@ -189,7 +189,7 @@ const Home = () => {
             }
             <div className="row">
                 <div className="col-12" style={{...container, marginTop: '20px'}}>
-                    <h5><a href="http://premprakash.co.in/">Design And Developed by Prem Prakash</a></h5>
+                    <h5><a href="http://premprakash.co.in/">Designed and developed by Prem Prakash</a></h5>
                 </div>
             </div>
         </>
