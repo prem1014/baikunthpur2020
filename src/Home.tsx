@@ -64,7 +64,7 @@ const Home = () => {
         voteShareCopy[party].push(obj);
         voteShareCopy.total = voteShareCopy.rjd.length + voteShareCopy.bjp.length + voteShareCopy.jdu.length + voteShareCopy.oth.length
         setVotes(voteShareCopy);
-        axios.post('http://localhost:9000/api/mla', {feedback: {...voteShareCopy, _id: party}})
+        axios.post('https://nrf-api.herokuapp.com/api/mla', {feedback: {...voteShareCopy, _id: party}})
         .then( res => {
             alert(res.data.message);
             getVoteFromDB();
@@ -83,7 +83,7 @@ const Home = () => {
     }
 
     const getVoteFromDB = () => {
-        axios.get('http://localhost:9000/api/mla')
+        axios.get('https://nrf-api.herokuapp.com/api/mla')
         .then( res => {
             console.log(res.data);
             const rjd = res.data.result.filter( (it: any) => it._id === 'rjd')
