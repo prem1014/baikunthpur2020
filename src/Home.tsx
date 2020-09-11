@@ -50,7 +50,7 @@ const Home = () => {
     }
 
     const submit = (party: string) => {
-        if(localStorage.getItem('id')) {
+        if(document.cookie || localStorage.getItem('id')) {
             alert('आपके मोबाइल या कंप्यूटर से एक बार वोट हो चूका है। कृपया दूसरे मोबाइल या कंप्यूटर से कोसिस करें। ')
             return;
         }
@@ -69,6 +69,7 @@ const Home = () => {
             alert(res.data.message);
             getVoteFromDB();
             localStorage.setItem('id',  '' + new Date().getTime());
+            document.cookie = '' + new Date().getTime();
         })
         .catch( err => {
 
@@ -146,7 +147,7 @@ const Home = () => {
                 isPanchayat &&
                 <>
                      <hr />
-                     <h3 className="text-center">Total Vote {voteShare.total} </h3>
+                     <h3 className="text-center">Total Vote {voteShare.total} (सर्वे 18-Sept-2020  को  समाप्त हो जायेगा। ) </h3>
                     <div className="row">
                         <div className="col-lg-3 col-md-3 col-6" style={{marginBottom: '10px'}}>
                             <div style={container} onClick={(event) => submit('rjd')}>
