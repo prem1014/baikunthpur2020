@@ -28,7 +28,8 @@ const Home = () => {
     const [userName, setUserName] = useState('');
     const [mobileNo, setMobileNo] = useState('');
     const [party, setParty] = useState('');
-    const [isOpen, setIsOpen] = useState(false)
+    const [isOpen, setIsOpen] = useState(false);
+    const [btnDisable, setBtnDisable] = useState(false);
     let vote: any = {
         rjd: [],
         jdu: [],
@@ -86,6 +87,7 @@ const Home = () => {
         voteShareCopy[party].push(obj);
         voteShareCopy.total = voteShareCopy.rjd.length + voteShareCopy.bjp.length + voteShareCopy.jdu.length + voteShareCopy.oth.length
         setVotes(voteShareCopy);
+        setBtnDisable(true);
         axios.post(urlProd, { feedback: { ...voteShareCopy, _id: party } })
             .then(res => {
                 alert(res.data.message);
@@ -95,7 +97,7 @@ const Home = () => {
                 onclose();
             })
             .catch(err => {
-
+                setBtnDisable(false)
             })
     }
 
@@ -163,6 +165,7 @@ const Home = () => {
         setIsOpen(false);
         setParty('');
         setVotes(vote);
+        setBtnDisable(false)
     }
 
     useEffect(() => {
@@ -261,7 +264,7 @@ const Home = () => {
                             />
                         </div>
                         <div className="col-12" style={{ marginTop: '10px' }}>
-                            <button disabled={(!userName)}
+                            <button disabled={!userName || btnDisable}
                                 onClick={(event) => submit(party)}
                                 className="btn btn-info"
                             >वोट कीजिये</button>
