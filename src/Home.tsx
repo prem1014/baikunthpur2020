@@ -162,6 +162,7 @@ const Home = () => {
     const onclose = () => {
         setIsOpen(false);
         setParty('');
+        setVotes(vote);
     }
 
     useEffect(() => {
