@@ -21,15 +21,21 @@ interface IVote {
 const Home = () => {
     const urlProd = 'https://nrf-api.herokuapp.com/api/mla';
     const urlLocal = 'http://localhost:9000/api/mla';
+    const emailUrlProd = 'https://hms-rest-api.herokuapp.com/api/send-otp';
+    const emailUrlLocal = 'http://localhost:8080/api/send-otp';
     const defaultValue = 'अपने पंचायत का नाम चुनें';
     const title = '99 बैकुंठपुर विधानसभा';
     const [isPanchayat, setIsPanchayat] = useState(false);
     const [village, setVillage] = useState('');
     const [userName, setUserName] = useState('');
     const [mobileNo, setMobileNo] = useState('');
+    const [email, setEmail] = useState('');
     const [party, setParty] = useState('');
     const [isOpen, setIsOpen] = useState(false);
     const [btnDisable, setBtnDisable] = useState(false);
+    const [otp, setOtp] = useState('');
+    const [otpSent, setOtpSent] = useState(false);
+    const [validOtp, setValidOtp] = useState(false);
     let vote: any = {
         rjd: [],
         jdu: [],
@@ -72,7 +78,7 @@ const Home = () => {
         }
         // alert('Heavy load on server, please try after some time');
         // return
-        if(document.cookie || localStorage.getItem('id')) {
+        if (document.cookie || localStorage.getItem('id')) {
             alert('आपके मोबाइल या कंप्यूटर से एक बार वोट हो चूका है। कृपया दूसरे मोबाइल या कंप्यूटर से कोसिस करें। ')
             return;
         }
@@ -80,7 +86,8 @@ const Home = () => {
             status: true,
             village: village,
             name: userName,
-            mobile: mobileNo
+            mobile: mobileNo,
+            email: email
         }
 
         let voteShareCopy = { ...votes };
@@ -146,6 +153,10 @@ const Home = () => {
             setUserName(e.target.value);
         } else if (type === 'mobile') {
             setMobileNo(e.target.value);
+        } else if (type === 'email') {
+            setEmail(e.target.value);
+        } else if (type === 'otp') {
+            setOtp(e.target.value);
         }
     }
 
@@ -166,6 +177,32 @@ const Home = () => {
         setParty('');
         setVotes(vote);
         setBtnDisable(false)
+    }
+    
+    const getOtp = () => {
+        axios.post(emailUrlProd, {email: email})
+        .then( res => {
+            if(res.data.successCode === '200') {
+                alert(res.data.message);
+                setOtpSent(true);
+            }
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    }
+
+    const validateOtp = () => {
+        axios.get(emailUrlProd + '/' + otp)
+        .then( res => {
+            if(res.data.successCode === 'OTP_VALID') {
+                setValidOtp(true);
+            }
+            alert(res.data.message);
+        })
+        .catch( err => {
+            console.log(err);
+        })
     }
 
     useEffect(() => {
@@ -226,7 +263,7 @@ const Home = () => {
                                 <h2>{voteShare.bjp}</h2>
                                 <h3>{getVotePer(voteShare.bjp, voteShare.total)}</h3>
                                 {/* <h6>{getVillageById(village)} {getVoteByVillage(village, 'bjp')}</h6> */}
-                                
+
                             </div>
                         </div>
                         <div className="col-lg-3 col-md-3 col-6">
@@ -244,34 +281,74 @@ const Home = () => {
             {
                 isOpen &&
                 <div id="myModal" className="cus-modal">
-                <div className="cus-modal-content">
-                    <span className="close" onClick={() => onclose()}>&times;</span>
-                    <div className="row" style={{ marginTop: '40px' }}>
-                        <div className="col-12">
-                            <input type="text"
-                                value={userName}
-                                placeholder="अपना नाम डालिये।"
-                                onChange={(e) => inputHndl(e, 'name')}
-                                className="form-control"
-                            />
-                        </div>
-                        <div className="col-12" style={{ marginTop: '10px' }}>
-                            <input type="number"
-                                value={mobileNo}
-                                placeholder="मोबाइल नंबर दीजिये।"
-                                onChange={(e) => inputHndl(e, 'mobile')}
-                                className="form-control"
-                            />
-                        </div>
-                        <div className="col-12" style={{ marginTop: '10px' }}>
-                            <button disabled={!userName || btnDisable}
-                                onClick={(event) => submit(party)}
-                                className="btn btn-info"
-                            >वोट कीजिये</button>
+                    <div className="cus-modal-content">
+                        <span className="close" onClick={() => onclose()}>&times;</span>
+                        <div className="row" style={{ marginTop: '40px' }}>
+                            <div className="col-12">
+                                <input type="text"
+                                    value={userName}
+                                    placeholder="अपना नाम डालिये।"
+                                    onChange={(e) => inputHndl(e, 'name')}
+                                    className="form-control"
+                                />
+                            </div>
+                            <div className="col-12" style={{ marginTop: '10px' }}>
+                                <input type="number"
+                                    value={mobileNo}
+                                    placeholder="मोबाइल नंबर दीजिये।"
+                                    onChange={(e) => inputHndl(e, 'mobile')}
+                                    className="form-control"
+                                />
+                            </div>
+                            <div className="col-12" style={{ marginTop: '10px' }}>
+                                <input type="email"
+                                    value={email}
+                                    placeholder="अपना ईमेल दीजिये और ओके कीजिये"
+                                    onChange={(e) => inputHndl(e, 'email')}
+                                    className="form-control"
+                                />
+                            </div>
+                            {
+                                otpSent &&
+                                <div className="col-12" style={{ marginTop: '10px' }}>
+                                <input type="number"
+                                    value={otp}
+                                    placeholder="otp डालिये।"
+                                    onChange={(e) => inputHndl(e, 'otp')}
+                                    className="form-control"
+                                />
+                            </div>
+                            }
+                            {
+                                !otp && !otpSent &&
+                                <div className="col-12" style={{ marginTop: '10px' }}>
+                                    <button disabled={!userName || btnDisable}
+                                        onClick={(event) => getOtp()}
+                                        className="btn btn-info"
+                                    >ओके कीजिये</button>
+                                </div>
+                            }
+                            {
+                                validOtp &&
+                                <div className="col-12" style={{ marginTop: '10px' }}>
+                                    <button disabled={!userName || btnDisable}
+                                        onClick={(event) => submit(party)}
+                                        className="btn btn-info"
+                                    >वोट कीजिये</button>
+                                </div>
+                            }
+                            {
+                                otpSent && !validOtp &&
+                                <div className="col-12" style={{ marginTop: '10px' }}>
+                                    <button disabled={!userName || btnDisable}
+                                        onClick={(event) => validateOtp()}
+                                        className="btn btn-info"
+                                    >सत्यापित कीजिये</button>
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>
-            </div>
             }
             <div className="row">
                 <div className="col-12" style={{ ...container, marginTop: '20px' }}>
