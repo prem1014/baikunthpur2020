@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import axios from 'axios';
+import libphonenumber from 'google-libphonenumber';
 
 import listOfPanchayat from './PanchayatList';
 
@@ -18,6 +19,8 @@ interface IVote {
 }
 
 const Home = () => {
+    const urlProd = 'https://nrf-api.herokuapp.com/api/mla';
+    const urlLocal = 'http://localhost:9000/api/mla';
     const defaultValue = 'अपने पंचायत का नाम चुनें';
     const title = '99 बैकुंठपुर विधानसभा';
     const [isPanchayat, setIsPanchayat] = useState(false);
@@ -54,11 +57,15 @@ const Home = () => {
     }
 
     const submit = (party: string) => {
+        if (userName.length <= 5) {
+            alert('अपना सही नाम दीजिये। ');
+            return;
+        }
         if (!mobileNo) {
             alert('मोबाइल नंबर दीजिये');
             return;
         }
-        if (mobileNo.length !== 10) {
+        if (!isValidMobile(mobileNo)) {
             alert('मोबाइल नंबर वैध नहीं है। ');
             return;
         }
@@ -79,7 +86,7 @@ const Home = () => {
         voteShareCopy[party].push(obj);
         voteShareCopy.total = voteShareCopy.rjd.length + voteShareCopy.bjp.length + voteShareCopy.jdu.length + voteShareCopy.oth.length
         setVotes(voteShareCopy);
-        axios.post('https://nrf-api.herokuapp.com/api/mla', { feedback: { ...voteShareCopy, _id: party } })
+        axios.post(urlProd, { feedback: { ...voteShareCopy, _id: party } })
             .then(res => {
                 alert(res.data.message);
                 getVoteFromDB();
@@ -100,7 +107,7 @@ const Home = () => {
     }
 
     const getVoteFromDB = () => {
-        axios.get('https://nrf-api.herokuapp.com/api/mla')
+        axios.get(urlProd)
             .then(res => {
                 console.log(res.data);
                 // const rjd = res.data.result.filter((it: any) => it._id === 'rjd')
@@ -140,6 +147,13 @@ const Home = () => {
         } else if (type === 'mobile') {
             setMobileNo(e.target.value);
         }
+    }
+
+    const isValidMobile = (mobileNo: string) => {
+        const phoneUtil = libphonenumber.PhoneNumberUtil.getInstance();
+        const isValid = phoneUtil.isValidNumberForRegion(phoneUtil.parse(mobileNo, 'IN'), 'IN');
+
+        return isValid;
     }
 
     const openModal = (party: string) => {
@@ -240,7 +254,7 @@ const Home = () => {
                             />
                         </div>
                         <div className="col-12" style={{ marginTop: '10px' }}>
-                            <input type="text"
+                            <input type="number"
                                 value={mobileNo}
                                 placeholder="मोबाइल नंबर दीजिये।"
                                 onChange={(e) => inputHndl(e, 'mobile')}
