@@ -69,8 +69,8 @@ const Home = () => {
             alert('मोबाइल नंबर वैध नहीं है। ');
             return;
         }
-        // alert('Heavy load on server, please try after some time');
-        // return
+        alert('Heavy load on server, please try after some time');
+        return
         if(document.cookie || localStorage.getItem('id')) {
             alert('आपके मोबाइल या कंप्यूटर से एक बार वोट हो चूका है। कृपया दूसरे मोबाइल या कंप्यूटर से कोसिस करें। ')
             return;
@@ -109,7 +109,6 @@ const Home = () => {
     const getVoteFromDB = () => {
         axios.get(urlProd)
             .then(res => {
-                console.log(res.data);
                 // const rjd = res.data.result.filter((it: any) => it._id === 'rjd')
                 // const jdu = res.data.result.filter((it: any) => it._id === 'jdu')
                 // const bjp = res.data.result.filter((it: any) => it._id === 'bjp')
