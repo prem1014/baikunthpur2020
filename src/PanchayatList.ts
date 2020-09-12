@@ -1,5 +1,40 @@
 const listOfPanchayat = [
     {
+        id: 'SALEMPUR_EAST',
+        name: 'SALEMPUR EAST',
+        hn: 'सलेमपुर पूर्व'
+    },
+    {
+        id: 'SALEMPUR_WEST',
+        name: 'SALEMPUR WEST',
+        hn: 'सलेमपुर पश्चिम'
+    },
+    {
+        id: 'HASANPUR',
+        name: 'HASANPUR',
+        hn: 'हसनपुर'
+    },
+    {
+        id: 'SADAUWA',
+        name: 'SADAUWA',
+        hn: 'सदौवा'
+    },
+    {
+        id: 'PIPRA',
+        name: 'PIPRA',
+        hn: 'पिपरा'
+    },
+    {
+        id: 'RAMPUR',
+        name: 'RAMPUR',
+        hn: 'रामपुर'
+    },
+    {
+        id: 'KHAJURIYA',
+        name: 'KHAJURIYA',
+        hn: 'खजुरिया'
+    },
+    {
         id: 'AMARPURA',
         name: 'AMARPURA',
         hn: 'अमरपुरा'
