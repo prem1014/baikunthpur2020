@@ -356,6 +356,10 @@ const Home = () => {
                         <div>Designed and developed by</div>
                         <div>Prem Prakash</div>
                     </a></h5>
+
+         <h5><a href="http://www.premprakash.co.in/#/contactMe">
+                        <div>Connect with me for all kind of IT or software services</div>
+                    </a></h5>
                 </div>
             </div>
         </>
