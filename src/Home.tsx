@@ -86,8 +86,7 @@ const Home = () => {
             status: true,
             village: village,
             name: userName,
-            mobile: mobileNo,
-            email: email
+            mobile: mobileNo
         }
 
         let voteShareCopy = { ...votes };
@@ -300,15 +299,15 @@ const Home = () => {
                                     className="form-control"
                                 />
                             </div>
-                            <div className="col-12" style={{ marginTop: '10px' }}>
+                            {/* <div className="col-12" style={{ marginTop: '10px' }}>
                                 <input type="email"
                                     value={email}
                                     placeholder="अपना ईमेल दीजिये और ओके कीजिये"
                                     onChange={(e) => inputHndl(e, 'email')}
                                     className="form-control"
                                 />
-                            </div>
-                            {
+                            </div> */}
+                            {/* {
                                 otpSent &&
                                 <div className="col-12" style={{ marginTop: '10px' }}>
                                 <input type="number"
@@ -327,9 +326,9 @@ const Home = () => {
                                         className="btn btn-info"
                                     >ओके कीजिये</button>
                                 </div>
-                            }
+                            } */}
                             {
-                                validOtp &&
+                                
                                 <div className="col-12" style={{ marginTop: '10px' }}>
                                     <button disabled={!userName || btnDisable}
                                         onClick={(event) => submit(party)}
@@ -337,7 +336,7 @@ const Home = () => {
                                     >वोट कीजिये</button>
                                 </div>
                             }
-                            {
+                            {/* {
                                 otpSent && !validOtp &&
                                 <div className="col-12" style={{ marginTop: '10px' }}>
                                     <button disabled={!userName || btnDisable}
@@ -345,7 +344,7 @@ const Home = () => {
                                         className="btn btn-info"
                                     >सत्यापित कीजिये</button>
                                 </div>
-                            }
+                            } */}
                         </div>
                     </div>
                 </div>
