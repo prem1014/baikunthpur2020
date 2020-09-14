@@ -245,7 +245,7 @@ const Home = () => {
                                 <h5 className="text-center">प्रेम शंकर यादव</h5>
                                 <h2>{voteShare.rjd}</h2>
                                 <h3>{getVotePer(voteShare.rjd, voteShare.total)}</h3>
-                                <h6>{getVillageById(village)} {getVoteByVillage(village, 'rjd')}</h6>
+                                {/* <h6>{getVillageById(village)} {getVoteByVillage(village, 'rjd')}</h6> */}
                             </div>
                         </div>
                         <div className="col-lg-3 col-md-3 col-6" style={{ marginBottom: '10px' }}>
@@ -254,7 +254,7 @@ const Home = () => {
                                 <h5 className="text-center">मंजीत सिंह</h5>
                                 <h2>{voteShare.jdu}</h2>
                                 <h3>{getVotePer(voteShare.jdu, voteShare.total)}</h3>
-                                <h6>{getVillageById(village)} {getVoteByVillage(village, 'jdu')}</h6>
+                                {/* <h6>{getVillageById(village)} {getVoteByVillage(village, 'jdu')}</h6> */}
                             </div>
                         </div>
                         <div className="col-lg-3 col-md-3 col-6">
@@ -263,7 +263,7 @@ const Home = () => {
                                 <h5 className="text-center">मिथलेश तिवारी</h5>
                                 <h2>{voteShare.bjp}</h2>
                                 <h3>{getVotePer(voteShare.bjp, voteShare.total)}</h3>
-                                <h6>{getVillageById(village)} {getVoteByVillage(village, 'bjp')}</h6>
+                                {/* <h6>{getVillageById(village)} {getVoteByVillage(village, 'bjp')}</h6> */}
 
                             </div>
                         </div>
@@ -273,7 +273,7 @@ const Home = () => {
                                 <h5 className="text-center">कोई और</h5>
                                 <h2>{voteShare.oth}</h2>
                                 <h3>{getVotePer(voteShare.oth, voteShare.total)}</h3>
-                                <h6>{getVillageById(village)} {getVoteByVillage(village, 'oth')}</h6>
+                                {/* <h6>{getVillageById(village)} {getVoteByVillage(village, 'oth')}</h6> */}
                             </div>
                         </div>
                     </div>
@@ -351,6 +351,13 @@ const Home = () => {
                     </div>
                 </div>
             }
+            <div className="row">
+                <div className="col-12" style={{ marginTop: '20px' }}>
+                    <h6 className="text-center">
+                        Due to some technical issues, we can't show village's data. We are working to resolve it. We apologize for the same.
+                    </h6>
+                </div>
+            </div>
             <div className="row">
                 <div className="col-12" style={{ ...container, marginTop: '20px' }}>
                     <h5><a href="http://premprakash.co.in/">
