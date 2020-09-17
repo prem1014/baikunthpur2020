@@ -65,6 +65,12 @@ const Home = () => {
     }
 
     const submit = (party: string) => {
+        const voteExpireTime = new Date('Thu Sep 18 2020 23:59:59 GMT+0530 (India Standard Time)').getTime();
+        const todayTime = new Date().getTime();
+        if(todayTime > voteExpireTime) {
+            alert('मतदान अब समाप्त हो गया है। आप सभी को बहुत-बहुत धन्यवाद');
+            return;
+        }
         if (userName.length <= 5) {
             alert('अपना सही नाम दीजिये। ');
             return;
@@ -354,7 +360,7 @@ const Home = () => {
             <div className="row">
                 <div className="col-12" style={{ marginTop: '20px' }}>
                     <h6 className="text-center">
-                        Due to some technical issues, we can't show village's data. We are working to resolve it. We apologize for the same.
+                        मतदान 18-09-2020 को पूर्वाह्न 11:59 बजे समाप्त होगा
                     </h6>
                 </div>
             </div>

@@ -47,7 +47,7 @@ const listOfPanchayat = [
     {
         id: 'KASHI_TENGARAHI',
         name: 'KASHI TENGARAHI',
-        hn: 'कशी टेंगराही'
+        hn: 'काशी टेंगराही'
     },
     {
         id: 'SUPAULI',
