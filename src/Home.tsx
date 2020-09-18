@@ -371,9 +371,10 @@ const Home = () => {
                         <div>Prem Prakash</div>
                     </a></h5>
 
-         <h5><a href="http://www.premprakash.co.in/#/contactMe">
+                    <h5><a href="http://www.premprakash.co.in/#/contactMe">
                         <div>Connect with me for all kind of IT or software services</div>
                     </a></h5>
+                    <h6 className="text-center">We provide software services for school, hospital, online survey, online advertisements and many more...</h6>
                 </div>
             </div>
         </>
