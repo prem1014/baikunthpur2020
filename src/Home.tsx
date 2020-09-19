@@ -360,7 +360,7 @@ const Home = () => {
             <div className="row">
                 <div className="col-12" style={{ marginTop: '20px' }}>
                     <h6 className="text-center">
-                        मतदान 18-09-2020 को पूर्वाह्न 11:59 बजे समाप्त होगा
+                        मतदान 18-09-2020 को पूर्वाह्न 11:59 बजे समाप्त हो गया
                     </h6>
                 </div>
             </div>
