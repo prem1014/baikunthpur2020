@@ -21,8 +21,8 @@ interface IVote {
 const Home = () => {
     const urlProd = 'https://nrf-api.herokuapp.com/api/mla';
     const urlLocal = 'http://localhost:9000/api/mla';
-    const emailUrlProd = 'https://hms-rest-api.herokuapp.com/api/send-otp';
-    const emailUrlLocal = 'http://localhost:8080/api/send-otp';
+    const emailUrlProd = 'https://nrf-api.herokuapp.com/api/otp';
+    const emailUrlLocal = 'http://localhost:9000/api/otp';
     const defaultValue = 'अपने पंचायत का नाम चुनें';
     const title = '99 बैकुंठपुर विधानसभा';
     const [isPanchayat, setIsPanchayat] = useState(false);
@@ -64,8 +64,16 @@ const Home = () => {
         cursor: 'pointer'
     }
 
+    const independentStyle = {
+        height: '71px',
+        margin: '0 105px',
+        borderRadius: '61px',
+        backgroundColor: 'yellow',
+        padding: '24px 8px'
+    }
+
     const submit = (party: string) => {
-        const voteExpireTime = new Date('Thu Sep 18 2020 23:59:59 GMT+0530 (India Standard Time)').getTime();
+        const voteExpireTime = new Date('Thu Oct 28 2020 23:59:59 GMT+0530 (India Standard Time)').getTime();
         const todayTime = new Date().getTime();
         if(todayTime > voteExpireTime) {
             alert('मतदान अब समाप्त हो गया है। आप सभी को बहुत-बहुत धन्यवाद');
@@ -85,10 +93,10 @@ const Home = () => {
         }
         // alert('Heavy load on server, please try after some time');
         // return
-        if (document.cookie || localStorage.getItem('id')) {
-            alert('आपके मोबाइल या कंप्यूटर से एक बार वोट हो चूका है। कृपया दूसरे मोबाइल या कंप्यूटर से कोसिस करें। ')
-            return;
-        }
+        // if (document.cookie || localStorage.getItem('id')) {
+        //     alert('आपके मोबाइल या कंप्यूटर से एक बार वोट हो चूका है। कृपया दूसरे मोबाइल या कंप्यूटर से कोसिस करें। ')
+        //     return;
+        // }
         const obj = {
             status: true,
             village: village,
@@ -101,7 +109,7 @@ const Home = () => {
         voteShareCopy.total = voteShareCopy.rjd.length + voteShareCopy.bjp.length + voteShareCopy.jdu.length + voteShareCopy.oth.length
         setVotes(voteShareCopy);
         setBtnDisable(true);
-        axios.post(urlProd, { feedback: { ...voteShareCopy, _id: party } })
+        axios.post(urlProd, { feedback: { ...voteShareCopy, _id: party }, otp: otp })
             .then(res => {
                 alert(res.data.message);
                 getVoteFromDB();
@@ -187,9 +195,9 @@ const Home = () => {
     }
     
     const getOtp = () => {
-        axios.post(emailUrlProd, {email: email})
+        axios.post(emailUrlProd, {mobile: mobileNo})
         .then( res => {
-            if(res.data.successCode === '200') {
+            if(res.data.successCode === 200) {
                 alert(res.data.message);
                 setOtpSent(true);
             }
@@ -251,16 +259,18 @@ const Home = () => {
                                 <h5 className="text-center">प्रेम शंकर यादव</h5>
                                 <h2>{voteShare.rjd}</h2>
                                 <h3>{getVotePer(voteShare.rjd, voteShare.total)}</h3>
-                                {/* <h6>{getVillageById(village)} {getVoteByVillage(village, 'rjd')}</h6> */}
+                                <h6>{getVillageById(village)} {getVoteByVillage(village, 'rjd')}</h6>
                             </div>
                         </div>
                         <div className="col-lg-3 col-md-3 col-6" style={{ marginBottom: '10px' }}>
                             <div style={container} onClick={(event) => openModal('jdu')}>
-                                <h5 className="center"><img src={jdu} style={rjdtyle} /></h5>
+                                <h5 className="center">
+                                    <div style={independentStyle}>निर्दलिय</div>
+                                </h5>
                                 <h5 className="text-center">मंजीत सिंह</h5>
                                 <h2>{voteShare.jdu}</h2>
                                 <h3>{getVotePer(voteShare.jdu, voteShare.total)}</h3>
-                                {/* <h6>{getVillageById(village)} {getVoteByVillage(village, 'jdu')}</h6> */}
+                                <h6>{getVillageById(village)} {getVoteByVillage(village, 'jdu')}</h6>
                             </div>
                         </div>
                         <div className="col-lg-3 col-md-3 col-6">
@@ -269,8 +279,7 @@ const Home = () => {
                                 <h5 className="text-center">मिथलेश तिवारी</h5>
                                 <h2>{voteShare.bjp}</h2>
                                 <h3>{getVotePer(voteShare.bjp, voteShare.total)}</h3>
-                                {/* <h6>{getVillageById(village)} {getVoteByVillage(village, 'bjp')}</h6> */}
-
+                                <h6>{getVillageById(village)} {getVoteByVillage(village, 'bjp')}</h6>
                             </div>
                         </div>
                         <div className="col-lg-3 col-md-3 col-6">
@@ -279,7 +288,7 @@ const Home = () => {
                                 <h5 className="text-center">कोई और</h5>
                                 <h2>{voteShare.oth}</h2>
                                 <h3>{getVotePer(voteShare.oth, voteShare.total)}</h3>
-                                {/* <h6>{getVillageById(village)} {getVoteByVillage(village, 'oth')}</h6> */}
+                                <h6>{getVillageById(village)} {getVoteByVillage(village, 'oth')}</h6>
                             </div>
                         </div>
                     </div>
@@ -307,15 +316,7 @@ const Home = () => {
                                     className="form-control"
                                 />
                             </div>
-                            {/* <div className="col-12" style={{ marginTop: '10px' }}>
-                                <input type="email"
-                                    value={email}
-                                    placeholder="अपना ईमेल दीजिये और ओके कीजिये"
-                                    onChange={(e) => inputHndl(e, 'email')}
-                                    className="form-control"
-                                />
-                            </div> */}
-                            {/* {
+                            {
                                 otpSent &&
                                 <div className="col-12" style={{ marginTop: '10px' }}>
                                 <input type="number"
@@ -334,9 +335,9 @@ const Home = () => {
                                         className="btn btn-info"
                                     >ओके कीजिये</button>
                                 </div>
-                            } */}
+                            }
                             {
-                                
+                                otpSent && !validOtp &&
                                 <div className="col-12" style={{ marginTop: '10px' }}>
                                     <button disabled={!userName || btnDisable}
                                         onClick={(event) => submit(party)}
@@ -344,24 +345,15 @@ const Home = () => {
                                     >वोट कीजिये</button>
                                 </div>
                             }
-                            {/* {
-                                otpSent && !validOtp &&
-                                <div className="col-12" style={{ marginTop: '10px' }}>
-                                    <button disabled={!userName || btnDisable}
-                                        onClick={(event) => validateOtp()}
-                                        className="btn btn-info"
-                                    >सत्यापित कीजिये</button>
-                                </div>
-                            } */}
                         </div>
                     </div>
                 </div>
             }
             <div className="row">
                 <div className="col-12" style={{ marginTop: '20px' }}>
-                    <h6 className="text-center">
+                    {/* <h6 className="text-center">
                         मतदान 18-09-2020 को पूर्वाह्न 11:59 बजे समाप्त हो गया
-                    </h6>
+                    </h6> */}
                 </div>
             </div>
             <div className="row">
@@ -374,7 +366,6 @@ const Home = () => {
                     <h5><a href="http://www.premprakash.co.in/#/contactMe">
                         <div>Connect with me for all kind of IT or software services</div>
                     </a></h5>
-                    <h6 className="text-center">We provide software services for school, hospital, online survey, online advertisements and many more...</h6>
                 </div>
             </div>
         </>
